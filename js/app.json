@@ -1,0 +1,24 @@
+{
+    "songs": [{
+            "id": 0,
+            "name": "chances",
+            "artist": "the storkers",
+            "song": "music/musica.mp3",
+            "image": "img/jacket.png"
+        },
+        {
+            "id": 1,
+            "name": "chances",
+            "artist": "the storkers",
+            "song": "music/musica.mp3",
+            "image": "img/jacket.png"
+        },
+        {
+            "id": 2,
+            "name": "chances",
+            "artist": "the storkers",
+            "song": "music/musica.mp3",
+            "image": "img/jacket.png"
+        }
+    ]
+}
