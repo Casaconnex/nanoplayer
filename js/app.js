@@ -1,6 +1,5 @@
 $(document).ready(function () {
-    initPlayer();
-    getSongs();
+    initPlayer();    
 });
 var audio = document.getElementById('player');
 var music;
@@ -8,16 +7,13 @@ var music;
 function initPlayer() {
     $('#shuffle').click(function () {
         $("#playlist").empty();
-        music.songs =  shuffle(music.songs);
+        music = shuffle(music);
         genList(music);
         playSong(0);
     });
 }
 
 function getSongs() {
-    $("#getFiles").click(function(){
-        window.webkitRequestFileSystem(window.TEMPORARY, 1024*1024, onInitFs, errorHandler);
-    });
     $.getJSON("/js/app.json", function (result) {
         music = result;
         genList(music);
@@ -25,7 +21,7 @@ function getSongs() {
 }
 
 function genList(music) {
-    $.each(music.songs, function (i, song) {
+    $.each(music, function (i, song) {
         $("#playlist").append('<li class="list-group-item" id="' + i + '">' + song.name + '</li>');
     });
     $('#playlist li').click(function () {
@@ -35,11 +31,11 @@ function genList(music) {
 }
 
 function playSong(selectedSong) {
-    var long = music.songs;
+    var long = music;
     if (selectedSong >= long.length) {
         audio.pause();
     } else {
-        $('#player').attr('src', music.songs[selectedSong].song);
+        $('#player').attr('src', music[selectedSong].song);
         audio.play();
         scheduleSong(selectedSong);
     }
@@ -53,7 +49,7 @@ function scheduleSong(id) {
     }
 }
 
-function shuffle(array) {    
+function shuffle(array) {
     for (var random, temp, position = array.length; position; random = Math.floor(Math.random() * position), temp = array[--position], array[position] = array[random], array[random] = temp);
     return array;
 }
