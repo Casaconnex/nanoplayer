@@ -1,24 +1,25 @@
 {
-    "songs": [{
-            "id": 0,
-            "name": "chances",
-            "artist": "the storkers",
-            "song": "music/musica.mp3",
-            "image": "img/jacket.png"
-        },
-        {
-            "id": 1,
-            "name": "chances",
-            "artist": "the storkers",
-            "song": "music/musica.mp3",
-            "image": "img/jacket.png"
-        },
-        {
-            "id": 2,
-            "name": "chances",
-            "artist": "the storkers",
-            "song": "music/musica.mp3",
-            "image": "img/jacket.png"
-        }
-    ]
+   "songs":[
+      {
+         "id":0,
+         "name":"No Hace Falta Nada",
+         "artist":"Víctor Manuelle",
+         "song":"music/No Hace Falta Nada.mp3",
+         "image":"img/jacket.png"
+      },
+      {
+         "id":1,
+         "name":"El pollo vallenato",
+         "artist":"Carlos Vives",
+         "song":"music/El pollo vallenato.mp3",
+         "image":"img/jacket.png"
+      },
+      {
+         "id":2,
+         "name":"Isla del Encanto",
+         "artist":"Varios",
+         "song":"music/Isla del Encanto.mp3",
+         "image":"img/jacket.png"
+      }
+   ]
 }
