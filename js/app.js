@@ -15,6 +15,9 @@ function initPlayer() {
 }
 
 function getSongs() {
+    $("#getFiles").click(function(){
+        window.webkitRequestFileSystem(window.TEMPORARY, 1024*1024, onInitFs, errorHandler);
+    });
     $.getJSON("/js/app.json", function (result) {
         music = result;
         genList(music);
