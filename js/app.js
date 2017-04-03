@@ -1,8 +1,10 @@
+//var audio = document.getElementById('player');
+var music;
+
 $(document).ready(function () {
     initPlayer();    
 });
-var audio = document.getElementById('player');
-var music;
+
 
 function initPlayer() {
     $('#shuffle').click(function () {
@@ -33,17 +35,17 @@ function genList(music) {
 function playSong(selectedSong) {
     var long = music;
     if (selectedSong >= long.length) {
-        audio.pause();
+        player.pause();
     } else {
         $('#player').attr('src', music[selectedSong].song);
-        audio.play();
+        player.play();
         scheduleSong(selectedSong);
     }
 
 }
 
 function scheduleSong(id) {
-    audio.onended = function () {
+    player.onended = function () {
         playSong(parseInt(id) + 1);
 
     }

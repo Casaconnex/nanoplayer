@@ -13,8 +13,7 @@
     <script src="js/bootstrap.min.js"></script>
     <script src="js/app.js"></script>
     <script src="js/files.js"></script>
-    <script src="https://use.fontawesome.com/3b0dcf9084.js"></script>
-    <script src="js/app.json"></script>
+    <script src="https://use.fontawesome.com/3b0dcf9084.js"></script>    
 
     <div class="container">
         <div class="row">
@@ -44,10 +43,11 @@
             // files is a FileList of File objects. List some properties.
             var songs = [];
             for (var i = 0, f; f = files[i]; i++) {
-                songs.push({
-                    id: i,
-                    name: f.name,
-                    song: f.webkitRelativePath
+                if(f.type === "audio/mp3")
+                    songs.push({
+                        id: i,
+                        name: f.name,
+                        song: URL.createObjectURL(f)
                 });                
             }
             music = songs; 
