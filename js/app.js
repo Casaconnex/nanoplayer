@@ -2,7 +2,7 @@
 var music;
 
 $(document).ready(function () {
-    initPlayer();    
+    initPlayer();
 });
 
 
@@ -39,9 +39,25 @@ function playSong(selectedSong) {
     } else {
         $('#player').attr('src', music[selectedSong].song);
         player.play();
+        notifyUser(music[selectedSong].name);
         scheduleSong(selectedSong);
     }
 
+}
+
+function notifyUser(songName) {
+    Push.create("NanoPlayer", {
+        body: songName,
+        icon: {
+            x16: 'img/notif16x16.ico',
+            x32: 'img/notif32x32.ico'
+        },
+        timeout: 4000,
+        onClick: function () {
+            window.focus();
+            this.close();
+        }
+    });
 }
 
 function scheduleSong(id) {
