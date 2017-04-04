@@ -1,0 +1,9 @@
+button, img, input[type=submit], input[type=reset], input[type=file] 
+{
+    cursor:pointer;
+}
+
+/*li:hover{ 
+background-color:red;
+color:white;
+}*/
