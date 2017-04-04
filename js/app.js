@@ -40,10 +40,28 @@ function initPlayer() {
             downloadLink.click();
         }
     });
+
+    $('#pl_upload').click(function () {
+       //todo
+    });
+
 }
 
 function destroyClickedElement(event) {
     document.body.removeChild(event.target);
+}
+
+function loadPlayList()
+{
+    var fileToLoad = document.getElementById("pl_upload").files[0];
+ 
+    var fileReader = new FileReader();
+    fileReader.onload = function(fileLoadedEvent) 
+    {
+        var textFromFileLoaded = fileLoadedEvent.target.result;
+        console.log(textFromFileLoaded);
+    };
+    fileReader.readAsText(fileToLoad, "UTF-8");
 }
 
 function getSongs() {

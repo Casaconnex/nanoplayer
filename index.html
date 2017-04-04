@@ -37,14 +37,21 @@
                     <form action="#">
                         <div class="col-md-3">
                             <div class="file-field input-field">
-                                <div class="btn tooltipped" data-position="top" data-delay="50" data-tooltip="Shuffle the playlist">                                   
+                                <div class="btn tooltipped" data-position="top" data-delay="50" data-tooltip="Shuffle the playlist">
                                     <div id="shuffle"><i class="material-icons">shuffle</i></div>
                                 </div>
                             </div>
-
+                        </div>
+                        <div class="col-md-3">
+                            <div class="file-field input-field">
+                                <div class="btn tooltipped" data-position="top" data-delay="50" data-tooltip="Upload playlist">
+                                    <div id="playlist_upload"><i class="material-icons">file_upload</i></div>
+                                    <input id="pl_upload" name="pl_upload" accept=".npl" type="file">
+                                </div>
+                            </div>
                         </div>
                     </form>
-                </div>
+                </div>                
                 <div class="collection" style="height: 500px; overflow: auto" id="playlist"></div>
                 <div class="col-md-12">
                     <form action="#">
@@ -106,7 +113,7 @@
         }
 
         document.getElementById('files').addEventListener('change', handleFileSelect, false);
-        document.getElementById('files2').addEventListener('change', handleFileSelect, false);
+        document.getElementById('files2').addEventListener('change', handleFileSelect, false);        
     </script>
 </body>
 
