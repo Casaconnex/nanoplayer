@@ -25,8 +25,8 @@
     <div class="container">
         <a href="#" data-activates="slide-out" class="button-collapse"><i class="material-icons">menu</i></a>
         <div class="row">
-            <div class="col-md-4 col-md-offset-4">
-                <img src="img/logo.png" alt="NanoPlayer">
+            <div align="center" class="col-md-4 col-md-offset-4">
+                <img style="width: 50%; height: 50%" src="img/logo.png" alt="NanoPlayer">
             </div>
         </div>
         <div class="row">
@@ -47,7 +47,7 @@
                             <div class="file-field input-field">
                                 <div class="btn tooltipped" data-position="top" data-delay="50" data-tooltip="Upload playlist">
                                     <div id="playlist_upload"><i class="material-icons">file_upload</i></div>
-                                    <input id="pl_upload" name="pl_upload" accept=".npl" type="file">
+                                    <input id="pl_upload" name="file" accept=".npl" type="file">
                                 </div>
                             </div>
                         </div>
@@ -96,42 +96,30 @@
                     <img src="img/background.jpg">
                 </div>
                 <a href="#!user"><img class="circle" src="img/logo.png"></a>
-                <a href="#!name"><span class="white-text name">nanohack</span></a>
+                <a href="#!name"><span class="white-text name">NanoPlayer</span></a>
                 <a href="mailto:nanohack@gmail.com"><span class="white-text email">nanohack@gmail.com</span></a>
             </div>
         </li>
-        <!--<li><a href="#!"><i class="material-icons">cloud</i>First Link With Icon</a></li>
-        <li><a href="#!">Second Link</a></li>
+        <li><span><i class="material-icons">cloud</i> Get music from cloud</span></li>
+        <li><input type="url" value="http://" id="music_cloud_url"></li>
+        <li>
+            <div class="btn tooltipped" data-position="top" data-delay="50" data-tooltip="Load from cloud">
+                <div id="music_cloud"><i class="material-icons">cloud_download</i></div>
+            </div>
+        </li>
         <li>
             <div class="divider"></div>
-        </li>-->
+        </li>
         <li><a class="subheader">Playlist</a></li>
         <!--<li><a class="waves-effect" href="#!">Third Link With Waves</a></li>-->
     </ul>
 
 
     <script>
-        function handleFileSelect(evt) {
-            var files = evt.target.files; // FileList object
-
-            if (songs === null)
-                songs = [];
-            // files is a FileList of File objects. List some properties.           
-            for (var i = 0, f; f = files[i]; i++) {
-                if (f.type === "audio/mp3")
-                    songs.push({
-                        id: i,
-                        name: f.name,
-                        song: URL.createObjectURL(f)
-                    });
-            }
-            music = songs;
-            $("#playlist").empty();
-            genList(music);
-        }
-
         document.getElementById('files').addEventListener('change', handleFileSelect, false);
         document.getElementById('files2').addEventListener('change', handleFileSelect, false);
+        document.getElementById('pl_upload').addEventListener('change', handleFileUpload, false);
+        document.getElementById('music_cloud_url').addEventListener('change', handleFileFromCloud, false);
     </script>
 </body>
 
