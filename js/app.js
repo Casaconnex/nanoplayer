@@ -1,6 +1,7 @@
-//var audio = document.getElementById('player');
 var music;
 var songs = [];
+var jsmediatags = window.jsmediatags;
+var listMp3FromCloud = [];
 
 $(document).ready(function () {
     $('.tooltipped').tooltip({ delay: 50 });
@@ -11,34 +12,88 @@ $(document).ready(function () {
         draggable: true // Choose whether you can drag to open on touch screens
     });
     initPlayer();
-
+    $('#cloud_generate_playlist').hide();
 
 });
+function handleGenPlaylist()
+{
+    genList(music);
+    playSong(0);
+}
 
 function handleFileFromCloud(evt) {
+    $('#cloud_generate_playlist').hide();
     var url = $("#music_cloud_url").val();
-    $.ajax({        
+    $.ajax({
         url: url,
         success: function (data) {
+            var pos = 0;
+            songs = [];
+            listMp3FromCloud = [];
             $(data).find("a:contains(.mp3)").each(function () {
-                if (songs === null)
-                    songs = [];
-
-                songs.push({
-                    id: $(this).position(),
-                    name: decodeURI($(this).attr("href")),
-                    song: decodeURI(url + $(this).attr("href"))
-                });                
+                listMp3FromCloud.push(decodeURI(url + $(this).attr("href")));
             });
-
-            music = songs;
-            $("#playlist").empty();
-            genList(music);
+            console.log(listMp3FromCloud);
         },
         error: function (request, error) {
-            console.log(error);
+            console.log('Error: ' + error);
         }
+    }).done(function () {
+        console.log('done call ajax');
+        getTagInfo();
+        $('#cloud_generate_playlist').show();         
     });
+}
+
+function getTagInfo() {
+    $.each(listMp3FromCloud, function (index, item) {
+        console.log(index);
+        //getSongData(index, item);
+        getSongTags(index, item);
+    });
+
+    $("#playlist").empty();
+    music = songs;
+    //$('#cloud_generate_playlist').click();    
+    genList(music);
+    console.log(music);
+}
+
+function getSongTags(pos, url) {
+
+    ID3.loadTags(url, function () {
+        showTags(pos, url);
+    }, {
+            tags: ["title", "artist", "album", "picture"]
+        });
+}
+
+function showTags(pos, url) {
+    var tags = ID3.getAllTags(url);
+    console.log(tags);
+    var obj = {};
+    if (tags) {
+        obj["id"] = pos;
+        obj["name"] = tags.title || '';
+        obj["song"] = url;
+        obj["artist"] = tags.artist || '';
+        obj["album"] = tags.album || '';        
+    }
+    
+
+    var image = tags.picture;
+    if (image) {
+        var base64String = "";
+        for (var i = 0; i < image.data.length; i++) {
+            base64String += String.fromCharCode(image.data[i]);
+        }
+        var base64 = "data:" + image.format + ";base64," +
+            window.btoa(base64String);
+        obj["image"] = base64;
+    } else {
+        obj["image"] = null;
+    }
+    songs.push(obj);
 }
 
 function handleFileUpload(evt) {
@@ -54,8 +109,7 @@ function handleFileUpload(evt) {
 }
 
 function handleFileSelect(evt) {
-    var files = evt.target.files; // FileList object
-
+    var files = evt.target.files; // FileList object    
     if (songs === null)
         songs = [];
     // files is a FileList of File objects. List some properties.           
@@ -84,6 +138,8 @@ function initPlayer() {
         $("#playlist").empty();
         player.pause();
         player.src = '';
+        $('#cover').attr("src", "img/vinil.png");
+        $('#current_song').html("");
         music = null;
         songs = null;
     });
@@ -121,16 +177,10 @@ function loadPlayList() {
     fileReader.readAsText(fileToLoad, "UTF-8");
 }
 
-function getSongs() {
-    $.getJSON("/js/app.json", function (result) {
-        music = result;
-        genList(music);
-    });
-}
-
 function genList(music) {
+    console.log('called');
     $.each(music, function (i, song) {
-        $("#playlist").append('<a class="collection-item">' + song.name.substring(song.name.lastIndexOf('.'), 0) + '<i><img id="' + i + '" src="img/play.png" align="right"></img></i></a>');
+        $("#playlist").append('<a class="collection-item">' + song.name + '<i><img id="' + i + '" src="img/play.png" align="right"></img></i></a>');
     });
     $('#playlist img').click(function () {
         var selectedSong = $(this).attr('id');
@@ -145,7 +195,11 @@ function playSong(selectedSong) {
     } else {
         $('#player').attr('src', music[selectedSong].song);
         player.play();
-        notifyUser(music[selectedSong].name.substring(music[selectedSong].name.lastIndexOf('.'), 0));
+        var songName = music[selectedSong].name;
+        var titleSong = document.createTextNode(songName);
+        $('#cover').attr('src', music[selectedSong].image);
+        $('#current_song').html(titleSong);
+        notifyUser(songName);
         scheduleSong(selectedSong);
     }
 

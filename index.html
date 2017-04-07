@@ -4,6 +4,7 @@
 <head>
     <title>NanoPlayer</title>
     <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <link rel="stylesheet" href="css/bootstrap.min.css">
     <link rel="stylesheet" href="css/app.css">
@@ -14,13 +15,15 @@
 </head>
 
 <body>
-    <script src="js/jquery-3.2.0.min.js"></script>
+    <script src="js/jquery-3.2.0.min.js"></script>    
     <script src="js/bootstrap.min.js"></script>
     <script src="js/app.js"></script>
     <script src="js/files.js"></script>
     <script src="https://use.fontawesome.com/3b0dcf9084.js"></script>
     <script src="modules/push.js/push.min.js"></script>
     <script src="modules/materialize/js/materialize.min.js"></script>
+    <script src="modules/mediatagsreader/dist/id3-minimized.js"></script>
+    <!--<script src="modules/jsmediatags/dist/jsmediatags.min.js"></script>-->
 
     <div class="container">
         <a href="#" data-activates="slide-out" class="button-collapse"><i class="material-icons">menu</i></a>
@@ -32,7 +35,10 @@
         <div class="row">
             <div class="col-md-12">
                 <div align="center">
-                    <audio id="player" controls="controls"></audio>
+                    <img id="cover" src="img/vinil.png" style="width: 10%; height: 10%" alt="">
+                    <div align="center" class="label" id="current_song"></div></<br>
+                    <audio id="player" controls="controls">
+                    </audio>
                 </div>
                 <div class="col-md-12">
                     <form action="#">
@@ -83,7 +89,9 @@
                         </div>
                     </form>
                 </div>
-                <div class="collection" style="width: 100%; height: 80%; overflow: auto" id="playlist"></div>
+                <div class="row">
+                    <div class="collection" style="width: 100%; height: 80%; overflow: auto" id="playlist"></div>
+                </div>
             </div>
         </div>
         <ul id="filelist"></ul>
@@ -101,10 +109,13 @@
             </div>
         </li>
         <li><span><i class="material-icons">cloud</i> Get music from cloud</span></li>
-        <li><input type="url" value="http://" id="music_cloud_url"></li>
+        <li><input type="url" placeholder="http://" class="validate" id="music_cloud_url"></li>
         <li>
             <div class="btn tooltipped" data-position="top" data-delay="50" data-tooltip="Load from cloud">
-                <div id="music_cloud"><i class="material-icons">cloud_download</i></div>
+                <div id="music_cloud"><i class="material-icons">cloud_download</i></div>                
+            </div>
+            <div id="cloud_generate_playlist" class="btn tooltipped" data-position="top" data-delay="50" data-tooltip="Generate Playlist">
+                <div><i class="material-icons">play_arrow</i></div>
             </div>
         </li>
         <li>
@@ -119,7 +130,8 @@
         document.getElementById('files').addEventListener('change', handleFileSelect, false);
         document.getElementById('files2').addEventListener('change', handleFileSelect, false);
         document.getElementById('pl_upload').addEventListener('change', handleFileUpload, false);
-        document.getElementById('music_cloud_url').addEventListener('change', handleFileFromCloud, false);
+        document.getElementById('music_cloud').addEventListener('click', handleFileFromCloud, false);
+        document.getElementById('cloud_generate_playlist').addEventListener('click', handleGenPlaylist, false);
     </script>
 </body>
 
