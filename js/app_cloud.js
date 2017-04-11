@@ -20,13 +20,15 @@ function handleFileFromCloud(evt) {
     }).done(function () {
         console.log('done call ajax');
         getTagInfo();
-        $('#cloud_generate_playlist').show();         
+        setTimeout(function () {
+            $("#cloud_generate_playlist").click();
+        }, (window.performance.timing.domContentLoadedEventEnd - window.performance.timing.navigationStart)*2);
     });
 }
 
 function getTagInfo() {
     $.each(listMp3FromCloud, function (index, item) {
-        console.log(index);        
+        console.log(index);
         getSongTags(index, item);
     });
 
@@ -37,8 +39,7 @@ function getTagInfo() {
     console.log(music);
 }
 
-function handleGenPlaylist()
-{
+function handleGenPlaylist() {
     genList(music);
     playSong(0);
 }

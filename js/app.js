@@ -81,7 +81,7 @@ function genList(music) {
 function playSong(selectedSong) {
     var long = music;
     if (selectedSong >= long.length) {
-        player.pause();
+        player.pause();        
     } else {
         $('#player').attr('src', music[selectedSong].song);
         player.play();

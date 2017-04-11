@@ -21,5 +21,9 @@ function handleFileSelect(evt) {
     }
     music = songs;
     $("#playlist").empty();
-    genList(music);
+
+    setTimeout(function() {
+        $("#cloud_generate_playlist").click();    
+    }, window.performance.timing.domContentLoadedEventEnd-window.performance.timing.navigationStart);
+    
 }
