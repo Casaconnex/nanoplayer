@@ -16,14 +16,17 @@ function handleFileSelect(evt) {
         songs = [];
     // files is a FileList of File objects. List some properties.           
     for (var i = 0, f; f = files[i]; i++) {
-        if (f.type === "audio/mp3")
-            getSongTagsFromFiles(i, f, URL.createObjectURL(f));
+        if (f.type === "audio/mp3") {
+            if (i <= 200)
+                getSongTagsFromFiles(i, f, URL.createObjectURL(f));
+        }
     }
     music = songs;
     $("#playlist").empty();
 
-    setTimeout(function() {
-        $("#cloud_generate_playlist").click();    
-    }, window.performance.timing.domContentLoadedEventEnd-window.performance.timing.navigationStart);
-    
+    setTimeout(function () {
+        $("#cloud_generate_playlist").click();
+        $('#playlist a')[0].click();
+    }, (window.performance.timing.domContentLoadedEventEnd - window.performance.timing.navigationStart) * 2);
+
 }

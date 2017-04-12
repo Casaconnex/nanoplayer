@@ -22,6 +22,7 @@ function handleFileFromCloud(evt) {
         getTagInfo();
         setTimeout(function () {
             $("#cloud_generate_playlist").click();
+            $('#playlist a')[0].click();
         }, (window.performance.timing.domContentLoadedEventEnd - window.performance.timing.navigationStart)*2);
     });
 }
@@ -33,13 +34,12 @@ function getTagInfo() {
     });
 
     $("#playlist").empty();
-    music = songs;
-    //$('#cloud_generate_playlist').click();    
+    music = songs;    
     genList(music);
     console.log(music);
 }
 
 function handleGenPlaylist() {
-    genList(music);
-    playSong(0);
+    genList(music);    
+    playSong(0);    
 }

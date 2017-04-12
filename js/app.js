@@ -19,6 +19,7 @@ function initPlayer() {
         $("#playlist").empty();
         music = shuffle(music);
         genList(music);
+        $('#playlist a')[0].click();
         playSong(0);
     });
 
@@ -48,6 +49,26 @@ function initPlayer() {
             downloadLink.click();
         }
     });
+
+    $('#next_song').click(function () {
+        var next = $('#playlist .active img');
+        if (next.length === 0)
+            console.log('nothing after');
+        var nextId = parseInt($('#playlist a.active img')[1].id) + 1;
+        if (nextId <= $('#playlist a img').length / 2) {
+            $('#playlist a')[nextId].click();
+            playSong(nextId);
+        }
+    });
+
+    $('#previous_song').click(function () {
+        var before = $('#playlist .active img');
+        var beforeId = parseInt($('#playlist a.active img')[1].id) - 1;
+        if (beforeId != -1) {
+            $('#playlist a')[beforeId].click();
+            playSong(beforeId);
+        }
+    });
 }
 
 function destroyClickedElement(event) {
@@ -68,7 +89,7 @@ function loadPlayList() {
 function genList(music) {
     console.log('called');
     $.each(music, function (i, song) {
-        if(song.image === null)
+        if (song.image === null)
             song.image = 'img/vinil.png';
         $("#playlist").append('<a class="collection-item"><img style="width: 50px; height: 50px" src="' + song.image + '"></img>' + song.name + '<i><img id="' + i + '" src="img/play.png" align="right"></img></i></a>');
     });
@@ -76,12 +97,16 @@ function genList(music) {
         var selectedSong = $(this).attr('id');
         playSong(selectedSong);
     });
+    $('#playlist a').click(function () {
+        $('#playlist a').removeClass('active');
+        $(this).addClass('active');
+    });
 }
 
 function playSong(selectedSong) {
     var long = music;
     if (selectedSong >= long.length) {
-        player.pause();        
+        player.pause();
     } else {
         $('#player').attr('src', music[selectedSong].song);
         player.play();
@@ -89,19 +114,15 @@ function playSong(selectedSong) {
         var titleSong = document.createTextNode(songName);
         $('#cover').attr('src', music[selectedSong].image);
         $('#current_song').html(titleSong);
-        notifyUser(songName);
+        notifyUser(songName, music[selectedSong].image);
         scheduleSong(selectedSong);
     }
 
 }
-
-function notifyUser(songName) {
+function notifyUser(songName, picture) {
     Push.create("NanoPlayer", {
         body: songName,
-        icon: {
-            x16: 'img/notif16x16.ico',
-            x32: 'img/notif32x32.ico'
-        },
+        icon: picture,
         timeout: 4000,
         onClick: function () {
             window.focus();
@@ -112,8 +133,9 @@ function notifyUser(songName) {
 
 function scheduleSong(id) {
     player.onended = function () {
-        playSong(parseInt(id) + 1);
-
+        var nextSong = parseInt(id) + 1;
+        playSong(nextSong);
+        $('#playlist a')[nextSong].click();
     }
 }
 
