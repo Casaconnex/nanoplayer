@@ -11,10 +11,26 @@ $(document).ready(function () {
     });
     initPlayer();
     $('#cloud_generate_playlist').hide();
-
+    $('#play').hide();
+    $('#pause').hide();
+    $('#previous_song').hide();
+    $('#next_song').hide();
 });
 
 function initPlayer() {
+
+    $('#play').click(function(){
+        $('#play').hide();
+        $('#pause').show();
+        player.play();
+    });
+
+    $('#pause').click(function(){
+        $('#play').show();
+        $('#pause').hide();
+        player.pause();
+    });
+
     $('#shuffle').click(function () {
         $("#playlist").empty();
         music = shuffle(music);
@@ -110,10 +126,15 @@ function playSong(selectedSong) {
     } else {
         $('#player').attr('src', music[selectedSong].song);
         player.play();
+        $('#pause').show();
+        $('#previous_song').show();
+        $('#next_song').show();
         var songName = music[selectedSong].name;
-        var titleSong = document.createTextNode(songName);
+        var songAlbum = music[selectedSong].album || '';
+        var fullSongTitle = songName + ' - ' + songAlbum;
+        var titleSong = document.createTextNode(songName);        
         $('#cover').attr('src', music[selectedSong].image);
-        $('#current_song').html(titleSong);
+        $('#current_song').html(titleSong);        
         notifyUser(songName, music[selectedSong].image);
         scheduleSong(selectedSong);
     }

@@ -1,3 +1,3 @@
 Hello everyone,
 
-This is a simple player (music and video) wrote entirely in HTML5.
+This is a simple music player wrote entirely in HTML5 with materialize desing.
