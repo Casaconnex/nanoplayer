@@ -2,6 +2,7 @@ var music;
 var songs = [];
 var listMp3FromCloud = [];
 
+
 $(document).ready(function () {
    
 
@@ -14,13 +15,11 @@ $(document).ready(function () {
     });
     initPlayer();
     $('#cloud_generate_playlist').hide();
-
+    $('#play').hide();
+    $('#pause').hide();
+    $('#previous_song').hide();
+    $('#next_song').hide();
 });
-function handleGenPlaylist()
-{
-    genList(music);
-    playSong(0);
-}
 
 function handleFileFromCloud(evt) {
     $('#cloud_generate_playlist').hide();
@@ -47,92 +46,25 @@ function handleFileFromCloud(evt) {
     });
 }
 
-function getTagInfo() {
-    $.each(listMp3FromCloud, function (index, item) {
-        console.log(index);
-        //getSongData(index, item);
-        getSongTags(index, item);
+function initPlayer() {
+
+    $('#play').click(function(){
+        $('#play').hide();
+        $('#pause').show();
+        player.play();
     });
 
-    $("#playlist").empty();
-    music = songs;
-    //$('#cloud_generate_playlist').click();    
-    genList(music);
-    console.log(music);
-}
+    $('#pause').click(function(){
+        $('#play').show();
+        $('#pause').hide();
+        player.pause();
+    });
 
-function getSongTags(pos, url) {
-
-    ID3.loadTags(url, function () {
-        showTags(pos, url);
-    }, {
-            tags: ["title", "artist", "album", "picture"]
-        });
-}
-
-function showTags(pos, url) {
-    var tags = ID3.getAllTags(url);
-    console.log(tags);
-    var obj = {};
-    if (tags) {
-        obj["id"] = pos;
-        obj["name"] = tags.title || '';
-        obj["song"] = url;
-        obj["artist"] = tags.artist || '';
-        obj["album"] = tags.album || '';        
-    }
-    
-
-    var image = tags.picture;
-    if (image) {
-        var base64String = "";
-        for (var i = 0; i < image.data.length; i++) {
-            base64String += String.fromCharCode(image.data[i]);
-        }
-        var base64 = "data:" + image.format + ";base64," +
-            window.btoa(base64String);
-        obj["image"] = base64;
-    } else {
-        obj["image"] = null;
-    }
-    songs.push(obj);
-}
-
-function handleFileUpload(evt) {
-    var fileToLoad = evt.target.files[0];
-    var fileReader = new FileReader();
-    fileReader.onload = function (fileLoadedEvent) {
-        var textFromFileLoaded = fileLoadedEvent.target.result;
-        music = JSON.parse(textFromFileLoaded);
-        $("#playlist").empty();
-        genList(music);
-    };
-    fileReader.readAsText(fileToLoad, "UTF-8");
-}
-
-function handleFileSelect(evt) {
-    var files = evt.target.files; // FileList object    
-    if (songs === null)
-        songs = [];
-    // files is a FileList of File objects. List some properties.           
-    for (var i = 0, f; f = files[i]; i++) {
-        if (f.type === "audio/mp3")
-            songs.push({
-                id: i,
-                name: f.name,
-                song: URL.createObjectURL(f)
-            });
-    }
-    music = songs;
-    $("#playlist").empty();
-    genList(music);
-}
-
-function initPlayer() {
     $('#shuffle').click(function () {
         $("#playlist").empty();
         music = shuffle(music);
         genList(music);
+        $('#playlist a')[0].click();
         playSong(0);
     });
 
@@ -162,6 +94,26 @@ function initPlayer() {
             downloadLink.click();
         }
     });
+
+    $('#next_song').click(function () {
+        var next = $('#playlist .active img');
+        if (next.length === 0)
+            console.log('nothing after');
+        var nextId = parseInt($('#playlist a.active img')[1].id) + 1;
+        if (nextId <= $('#playlist a img').length / 2) {
+            $('#playlist a')[nextId].click();
+            playSong(nextId);
+        }
+    });
+
+    $('#previous_song').click(function () {
+        var before = $('#playlist .active img');
+        var beforeId = parseInt($('#playlist a.active img')[1].id) - 1;
+        if (beforeId != -1) {
+            $('#playlist a')[beforeId].click();
+            playSong(beforeId);
+        }
+    });
 }
 
 function destroyClickedElement(event) {
@@ -182,11 +134,17 @@ function loadPlayList() {
 function genList(music) {
     console.log('called');
     $.each(music, function (i, song) {
-        $("#playlist").append('<a class="collection-item">' + song.name + '<i><img id="' + i + '" src="img/play.png" align="right"></img></i></a>');
+        if (song.image === null)
+            song.image = 'img/vinil.png';
+        $("#playlist").append('<a class="collection-item"><img style="width: 50px; height: 50px" src="' + song.image + '"></img>' + song.name + '<i><img id="' + i + '" src="img/play.png" align="right"></img></i></a>');
     });
     $('#playlist img').click(function () {
         var selectedSong = $(this).attr('id');
         playSong(selectedSong);
+    });
+    $('#playlist a').click(function () {
+        $('#playlist a').removeClass('active');
+        $(this).addClass('active');
     });
 }
 
@@ -197,23 +155,24 @@ function playSong(selectedSong) {
     } else {
         $('#player').attr('src', music[selectedSong].song);
         player.play();
+        $('#pause').show();
+        $('#previous_song').show();
+        $('#next_song').show();
         var songName = music[selectedSong].name;
-        var titleSong = document.createTextNode(songName);
+        var songAlbum = music[selectedSong].album || '';
+        var fullSongTitle = songName + ' - ' + songAlbum;
+        var titleSong = document.createTextNode(songName);        
         $('#cover').attr('src', music[selectedSong].image);
-        $('#current_song').html(titleSong);
-        notifyUser(songName);
+        $('#current_song').html(titleSong);        
+        notifyUser(songName, music[selectedSong].image);
         scheduleSong(selectedSong);
     }
 
 }
-
-function notifyUser(songName) {
+function notifyUser(songName, picture) {
     Push.create("NanoPlayer", {
         body: songName,
-        icon: {
-            x16: 'img/notif16x16.ico',
-            x32: 'img/notif32x32.ico'
-        },
+        icon: picture,
         timeout: 4000,
         onClick: function () {
             window.focus();
@@ -224,8 +183,9 @@ function notifyUser(songName) {
 
 function scheduleSong(id) {
     player.onended = function () {
-        playSong(parseInt(id) + 1);
-
+        var nextSong = parseInt(id) + 1;
+        playSong(nextSong);
+        $('#playlist a')[nextSong].click();
     }
 }
 
