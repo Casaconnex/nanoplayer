@@ -1,9 +1,10 @@
 var music;
 var songs = [];
-var jsmediatags = window.jsmediatags;
 var listMp3FromCloud = [];
 
 $(document).ready(function () {
+   
+
     $('.tooltipped').tooltip({ delay: 50 });
     $(".button-collapse").sideNav({
         menuWidth: 300, // Default is 300
@@ -26,6 +27,7 @@ function handleFileFromCloud(evt) {
     var url = $("#music_cloud_url").val();
     $.ajax({
         url: url,
+        headers: {"Access-Control-Allow-Origin": "*"},
         success: function (data) {
             var pos = 0;
             songs = [];
@@ -36,7 +38,7 @@ function handleFileFromCloud(evt) {
             console.log(listMp3FromCloud);
         },
         error: function (request, error) {
-            console.log('Error: ' + error);
+            console.log(error);
         }
     }).done(function () {
         console.log('done call ajax');
