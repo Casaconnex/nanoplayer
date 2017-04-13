@@ -40,9 +40,28 @@
                         <a id="pause" style="float:center;" class="btn-floating halfway-fab waves-effect waves-light red"><i class="material-icons">pause</i></a>
                     </div>
                     <div class="card-content">
+                        <audio style="display: none" id="player" ontimeupdate="SeekBar()" ondurationchange="CreateSeekBar()">
+                        </audio>
                         <a id="previous_song" style="float:left;" class="btn-floating waves-effect waves-light red"><i class="material-icons">skip_previous</i></a>
                         <a id="next_song" style="float:rigth;" class="btn-floating waves-effect waves-light red"><i class="material-icons">skip_next</i></a>
-                        <input type="range" min="0" max="100" value="100" step="1" oninput="audio.volume = this.value/100" onchange="this.oninput()">   
+                        <div class="card-action">
+                            <table>
+                                <tr>
+                                    <td>
+                                        <input id="audioSeekBar" min="0" max="334" step="1" value="0" type="range" oninput="audioSeekBar()" onchange="this.oninput()">
+                                    </td>
+                                    <td>
+                                        <p id="duration"></p>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td><i class="material-icons">volume_up</i></td>
+                                    <td><input type="range" min="0" max="100" value="100" step="1" oninput="player.volume = this.value/100"
+                                            onchange="this.oninput()"></td>
+                                </tr>
+                            </table>
+                        </div>
+
                         <div class="card-action">
                             <div class="btn-flat tooltipped file-field input-field" data-position="top" data-delay="50" data-tooltip="Shuffle the playlist">
                                 <div id="shuffle"><i class="material-icons">shuffle</i></div>
@@ -73,24 +92,6 @@
         <div class="row">
             <div class="collection" style="width: 100%; height: 80%; overflow: auto" id="playlist"></div>
         </div>
-
-        <div class="row">
-            <div class="col-md-12">
-                <div align="center">
-                    <img id="cover_temp" src="img/vinil.png" style="width: 10%; height: 10%" alt="">
-                    <div align="center" class="label" id="current_song_temp"></div>
-                    </<br>
-                    <a id="previous_song_temp" href="#"><i class="large material-icons">navigate_before</i></a>
-                    <audio id="player" controls="controls">
-                    </audio>
-                    <a id="next_song_temp" href="#"><i class="large material-icons">navigate_next</i></a>
-                </div>
-                <div class="row">
-                    <div class="collection" style="width: 100%; height: 80%; overflow: auto" id="playlist_temp"></div>
-                </div>
-            </div>
-        </div>
-
     </div>
 
     <ul id="slide-out" class="side-nav">
@@ -128,6 +129,12 @@
         document.getElementById('pl_upload').addEventListener('change', handleFileUpload, false);
         document.getElementById('music_cloud').addEventListener('click', handleFileFromCloud, false);
         document.getElementById('cloud_generate_playlist').addEventListener('click', handleGenPlaylist, false);
+        player.addEventListener("timeupdate", function () {
+            var duration = document.getElementById("duration");
+            var s = parseInt(player.currentTime % 60);
+            var m = parseInt((player.currentTime / 60) % 60);
+            duration.innerHTML = m + ':' + s;
+        }, false);
     </script>
 </body>
 

@@ -6,3 +6,12 @@ button, img, input[type=submit], input[type=reset], input[type=file]
 body{
     background-color: #3A3F46;
 }
+
+.volume-field {
+    bottom: 67px;
+    right: 127px;
+    position: absolute;
+    width: 50px;
+    z-index: 5;
+    transform: scale(0);       
+  }
