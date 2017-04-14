@@ -26,116 +26,120 @@
     <script src="modules/push.js/push.min.js"></script>
     <script src="modules/materialize/js/materialize.min.js"></script>
     <script src="modules/mediatagsreader/dist/id3-minimized.js"></script>
-    <!--<script src="modules/jsmediatags/dist/jsmediatags.min.js"></script>-->
 
-    <div class="container">
-        <a href="#" data-activates="slide-out" class="button-collapse"><i class="material-icons">menu</i></a>
-        <div class="row">
-            <div class="col s6 m6">
-                <div class="card">
-                    <div class="card-image">
-                        <img id="cover" src="img/vinil.png">
-                        <span id="current_song" class="card-title"></span>
-                        <a id="play" style="float:center;" class="btn-floating halfway-fab waves-effect waves-light red"><i class="material-icons">play_arrow</i></a>
-                        <a id="pause" style="float:center;" class="btn-floating halfway-fab waves-effect waves-light red"><i class="material-icons">pause</i></a>
-                    </div>
-                    <div class="card-content">
-                        <audio style="display: none" id="player" ontimeupdate="SeekBar()" ondurationchange="CreateSeekBar()">
-                        </audio>
-                        <a id="previous_song" style="float:left;" class="btn-floating waves-effect waves-light red"><i class="material-icons">skip_previous</i></a>
-                        <a id="next_song" style="float:rigth;" class="btn-floating waves-effect waves-light red"><i class="material-icons">skip_next</i></a>
-                        <div class="card-action">
-                            <table>
-                                <tr>
-                                    <td>
-                                        <input id="audioSeekBar" min="0" max="334" step="1" value="0" type="range" oninput="audioSeekBar()" onchange="this.oninput()">
-                                    </td>
-                                    <td>
-                                        <p id="duration"></p>
-                                    </td>
-                                </tr>
-                                <tr>
-                                    <td><i class="material-icons">volume_up</i></td>
-                                    <td><input type="range" min="0" max="100" value="100" step="1" oninput="player.volume = this.value/100"
-                                            onchange="this.oninput()"></td>
-                                </tr>
-                            </table>
+    <div id="preloader" class="progress" style="display: none">
+        <div class="indeterminate"></div>
+    </div>
+    <a href="#" data-activates="slide-out" class="button-collapse"><i class="material-icons">menu</i></a>
+    <div class="row">
+        <div class="col s4">
+            <div class="card">
+                <div class="card-image">
+                    <img id="cover" src="img/vinil.png">
+                    <p id="current_song" class="card-title"></p>
+                </div>
+                <div class="card-content">
+                    <audio style="display: none" id="player" ontimeupdate="SeekBar()" ondurationchange="CreateSeekBar()">
+                    </audio>
+                    <center>
+                        <a id="previous_song" style="display: none" class="btn-floating waves-effect waves-light blue"><i class="material-icons">skip_previous</i></a>
+                        <a id="play" style="display: none" class="btn-floating waves-effect waves-light red"><i class="material-icons">play_arrow</i></a>
+                        <a id="pause" style="display: none" class="btn-floating waves-effect waves-light red"><i class="material-icons">pause</i></a>
+                        <a id="next_song" style="display: none" class="btn-floating waves-effect waves-light blue"><i class="material-icons">skip_next</i></a>
+
+                        <div class="card-content">
+                            <p class="range-field">
+                                <input style="display: none" id="audioSeekBar" min="0" max="334" step="1" value="0" type="range" oninput="audioSeekBar()"
+                                    onchange="this.oninput()">
+                            </p>
+                            <p id="duration"></p>
+                            <p id="total_duration"></p>
                         </div>
-
-                        <div class="card-action">
-                            <div class="btn-flat tooltipped file-field input-field" data-position="top" data-delay="50" data-tooltip="Shuffle the playlist">
-                                <div id="shuffle"><i class="material-icons">shuffle</i></div>
-                            </div>
-                            <div class="btn-flat tooltipped file-field input-field" data-position="top" data-delay="50" data-tooltip="Get music from a folder...">
-                                <span><i class="material-icons">queue_music</i></span>
-                                <input id="files" name="files[]" accept="audio/mp3" type="file" multiple webkitdirectory>
-                            </div>
-                            <div class="btn-flat tooltipped file-field input-field" data-position="top" data-delay="50" data-tooltip="Get music from a file...">
-                                <span><i class="material-icons">music_note</i></span>
-                                <input id="files2" name="files[]" accept="audio/mp3" type="file">
-                            </div>
-                            <div class="btn-flat tooltipped file-field input-field" data-position="top" data-delay="50" data-tooltip="Clear playlist">
-                                <div id="playlist_clean"><i class="material-icons">clear_all</i></div>
-                            </div>
-                            <div class="btn-flat tooltipped file-field input-field" data-position="top" data-delay="50" data-tooltip="Download playlist">
-                                <div id="playlist_download"><i class="material-icons">file_download</i></div>
-                            </div>
-                            <div class="btn-flat tooltipped file-field input-field" data-position="top" data-delay="50" data-tooltip="Upload playlist">
-                                <div id="playlist_upload"><i class="material-icons">file_upload</i></div>
-                                <input id="pl_upload" name="file" accept=".npl" type="file">
-                            </div>
+                        <div class="card-content">
+                            <p class="range-field">
+                                <label style="display: none" id="label_volume" for="volume"><i class="material-icons">volume_up</i></label>
+                                <input style="display: none" id="volume" style="width:50%" type="range" min="0" max="100" value="100" step="1" oninput="player.volume = this.value/100"
+                                    onchange="this.oninput()">
+                            </p>
+                        </div>
+                    </center>
+                    <div class="card-action">
+                        <div class="btn-flat tooltipped file-field input-field" data-position="top" data-delay="50" data-tooltip="Shuffle the playlist">
+                            <div id="shuffle"><i class="material-icons">shuffle</i></div>
+                        </div>
+                        <div class="btn-flat tooltipped file-field input-field" data-position="top" data-delay="50" data-tooltip="Get music from a folder...">
+                            <span><i class="material-icons">queue_music</i></span>
+                            <input id="files" name="files[]" accept="audio/mp3" type="file" multiple webkitdirectory>
+                        </div>
+                        <div class="btn-flat tooltipped file-field input-field" data-position="top" data-delay="50" data-tooltip="Get music from a file...">
+                            <span><i class="material-icons">music_note</i></span>
+                            <input id="files2" name="files[]" accept="audio/mp3" type="file">
+                        </div>
+                        <div class="btn-flat tooltipped file-field input-field" data-position="top" data-delay="50" data-tooltip="Clear playlist">
+                            <div id="playlist_clean"><i class="material-icons">clear_all</i></div>
+                        </div>
+                        <div class="btn-flat tooltipped file-field input-field" data-position="top" data-delay="50" data-tooltip="Download playlist">
+                            <div id="playlist_download"><i class="material-icons">file_download</i></div>
+                        </div>
+                        <div class="btn-flat tooltipped file-field input-field" data-position="top" data-delay="50" data-tooltip="Upload playlist">
+                            <div id="playlist_upload"><i class="material-icons">file_upload</i></div>
+                            <input id="pl_upload" name="file" accept=".npl" type="file">
                         </div>
                     </div>
                 </div>
             </div>
         </div>
-        <div class="row">
+        <div class="col s8">
             <div class="collection" style="width: 100%; height: 80%; overflow: auto" id="playlist"></div>
         </div>
-    </div>
 
-    <ul id="slide-out" class="side-nav">
-        <li>
-            <div class="userView">
-                <div class="background">
-                    <img src="img/background.jpg">
+        <ul id="slide-out" class="side-nav">
+            <li>
+                <div class="userView">
+                    <div class="background">
+                        <img src="img/background.jpg">
+                    </div>
+                    <a href="#!user"><img class="circle" src="img/logo.png"></a>
+                    <a href="#!name"><span class="white-text name">NanoPlayer</span></a>
+                    <a href="mailto:nanohack@gmail.com"><span class="white-text email">nanohack@gmail.com</span></a>
                 </div>
-                <a href="#!user"><img class="circle" src="img/logo.png"></a>
-                <a href="#!name"><span class="white-text name">NanoPlayer</span></a>
-                <a href="mailto:nanohack@gmail.com"><span class="white-text email">nanohack@gmail.com</span></a>
-            </div>
-        </li>
-        <li><span><i class="material-icons">cloud</i> Get music from cloud</span></li>
-        <li><input type="url" placeholder="http://" class="validate" id="music_cloud_url"></li>
-        <li>
-            <div class="btn tooltipped" data-position="top" data-delay="50" data-tooltip="Load from cloud">
-                <div id="music_cloud"><i class="material-icons">cloud_download</i></div>
-            </div>
-            <div id="cloud_generate_playlist" class="btn tooltipped" data-position="top" data-delay="50" data-tooltip="Generate Playlist">
-                <div><i class="material-icons">play_arrow</i></div>
-            </div>
-        </li>
-        <li>
-            <div class="divider"></div>
-        </li>
-        <li><a class="subheader">Playlist</a></li>
-        <!--<li><a class="waves-effect" href="#!">Third Link With Waves</a></li>-->
-    </ul>
+            </li>
+            <li><span><i class="material-icons">cloud</i> Get music from cloud</span></li>
+            <li><input type="url" placeholder="http://" class="validate" id="music_cloud_url"></li>
+            <li>
+                <div class="btn tooltipped" data-position="top" data-delay="50" data-tooltip="Load from cloud">
+                    <div id="music_cloud"><i class="material-icons">cloud_download</i></div>
+                </div>
+                <div id="cloud_generate_playlist" class="btn tooltipped" data-position="top" data-delay="50" data-tooltip="Generate Playlist">
+                    <div><i class="material-icons">play_arrow</i></div>
+                </div>
+            </li>
+            <li>
+                <div class="divider"></div>
+            </li>
+            <li><a class="subheader">Playlist</a></li>
+            <li><a class="waves-effect" href="#!">Third Link With Waves</a></li>
+        </ul>
 
 
-    <script>
-        document.getElementById('files').addEventListener('change', handleFileSelect, false);
-        document.getElementById('files2').addEventListener('change', handleFileSelect, false);
-        document.getElementById('pl_upload').addEventListener('change', handleFileUpload, false);
-        document.getElementById('music_cloud').addEventListener('click', handleFileFromCloud, false);
-        document.getElementById('cloud_generate_playlist').addEventListener('click', handleGenPlaylist, false);
-        player.addEventListener("timeupdate", function () {
-            var duration = document.getElementById("duration");
-            var s = parseInt(player.currentTime % 60);
-            var m = parseInt((player.currentTime / 60) % 60);
-            duration.innerHTML = m + ':' + s;
-        }, false);
-    </script>
+
+        <script>
+            document.getElementById('files').addEventListener('change', handleFileSelect, false);
+            document.getElementById('files2').addEventListener('change', handleFileSelect, false);
+            document.getElementById('pl_upload').addEventListener('change', handleFileUpload, false);
+            document.getElementById('music_cloud').addEventListener('click', handleFileFromCloud, false);
+            document.getElementById('cloud_generate_playlist').addEventListener('click', handleGenPlaylist, false);
+            player.addEventListener("timeupdate", function () {
+                var duration = document.getElementById("duration");
+                var s = parseInt(player.currentTime % 60);
+                var m = parseInt((player.currentTime / 60) % 60);
+                duration.innerHTML = m + ':' + s;
+                var sec = parseInt(player.duration % 60);
+                var min = parseInt((player.duration / 60) % 60);
+                var total_duration = document.getElementById("total_duration");
+                total_duration.innerHTML = ' / ' + min + ':' + sec;
+            }, false);
+        </script>
 </body>
 
 </html>

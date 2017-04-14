@@ -11,6 +11,7 @@ function handleFileUpload(evt) {
 }
 
 function handleFileSelect(evt) {
+    $('#preloader').show();
     var files = evt.target.files; // FileList object    
     if (songs === null)
         songs = [];
@@ -26,7 +27,10 @@ function handleFileSelect(evt) {
 
     setTimeout(function () {
         $("#cloud_generate_playlist").click();
-        $('#playlist a')[0].click();
+        var pl = $('#playlist a')[0];
+        if(pl != null)
+            $('#playlist a')[0].click();
+        $('#preloader').hide();
     }, (window.performance.timing.domContentLoadedEventEnd - window.performance.timing.navigationStart) * 2);
 
 }

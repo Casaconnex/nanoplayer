@@ -4,29 +4,44 @@ var listMp3FromCloud = [];
 
 
 $(document).ready(function () {
-   
-
     $('.tooltipped').tooltip({ delay: 50 });
     $(".button-collapse").sideNav({
         menuWidth: 300, // Default is 300
-        edge: 'right', // Choose the horizontal origin
+        edge: 'left', // Choose the horizontal origin
         closeOnClick: true, // Closes side-nav on <a> clicks, useful for Angular/Meteor
         draggable: true // Choose whether you can drag to open on touch screens
     });
+    hideElementsOnPage();
     initPlayer();
+});
+
+function hideElementsOnPage() {
+    $('#audioSeekBar').hide();
+    $('#label_volume').hide();
+    $('#volume').hide();
     $('#cloud_generate_playlist').hide();
     $('#play').hide();
     $('#pause').hide();
     $('#previous_song').hide();
     $('#next_song').hide();
-});
+}
+
+function showElementsOnPage() {
+    $('#pause').show();
+    $('#previous_song').show();
+    $('#next_song').show();
+    $('#audioSeekBar').show();
+    $('#label_volume').show();
+    $('#volume').show();
+}
+
 
 function handleFileFromCloud(evt) {
     $('#cloud_generate_playlist').hide();
     var url = $("#music_cloud_url").val();
     $.ajax({
         url: url,
-        headers: {"Access-Control-Allow-Origin": "*"},
+        headers: { "Access-Control-Allow-Origin": "*" },
         success: function (data) {
             var pos = 0;
             songs = [];
@@ -42,19 +57,19 @@ function handleFileFromCloud(evt) {
     }).done(function () {
         console.log('done call ajax');
         getTagInfo();
-        $('#cloud_generate_playlist').show();         
+        $('#cloud_generate_playlist').show();
     });
 }
 
 function initPlayer() {
 
-    $('#play').click(function(){
+    $('#play').click(function () {
         $('#play').hide();
         $('#pause').show();
         player.play();
     });
 
-    $('#pause').click(function(){
+    $('#pause').click(function () {
         $('#play').show();
         $('#pause').hide();
         player.pause();
@@ -155,15 +170,13 @@ function playSong(selectedSong) {
     } else {
         $('#player').attr('src', music[selectedSong].song);
         player.play();
-        $('#pause').show();
-        $('#previous_song').show();
-        $('#next_song').show();
+        showElementsOnPage();
         var songName = music[selectedSong].name;
         var songAlbum = music[selectedSong].album || '';
         var fullSongTitle = songName + ' - ' + songAlbum;
-        var titleSong = document.createTextNode(songName);        
+        var titleSong = document.createTextNode(songName);
         $('#cover').attr('src', music[selectedSong].image);
-        $('#current_song').html(titleSong);        
+        $('#current_song').html(titleSong);
         notifyUser(songName, music[selectedSong].image);
         scheduleSong(selectedSong);
     }
