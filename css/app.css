@@ -3,20 +3,9 @@ button, img, input[type=submit], input[type=reset], input[type=file]
     cursor:pointer;
 }
 
-body{
-    /*background-color: #3A3F46;*/
+body{    
     background-image:radial-gradient(white, black);
 }
 p {
     display: inline;
-}
-
-.loader{
-    display: table;
-    position:absolute;
-    width:100px;
-    height:100px;
-    left:50%;
-    top:50%;
-    margin: -50px 0px 0px -50px;
 }

@@ -6,7 +6,6 @@
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <link rel="stylesheet" href="css/bootstrap.min.css">
     <link rel="stylesheet" href="css/app.css">
     <link href="http://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
     <link type="text/css" rel="stylesheet" href="modules/materialize/css/materialize.min.css" media="screen,projection" />
@@ -30,69 +29,57 @@
     <div id="preloader" class="progress" style="display: none">
         <div class="indeterminate"></div>
     </div>
-    <a href="#" data-activates="slide-out" class="button-collapse"><i class="material-icons">menu</i></a>
+    <paper-toolbar>
+        <a href="#" data-activates="slide-out" class="button-collapse"><i class="material-icons">menu</i></a>
+    </paper-toolbar>
+
     <div class="row">
         <div class="col s4">
             <div class="card">
                 <div class="card-image">
                     <img id="cover" src="img/vinil.png">
-                    <p id="current_song" class="card-title"></p>
+                    <p style="display: none" id="current_song" class="card-title teal lighten-2 truncate"></p>
                 </div>
                 <div class="card-content">
                     <audio style="display: none" id="player" ontimeupdate="SeekBar()" ondurationchange="CreateSeekBar()">
                     </audio>
                     <center>
+                        <p id="duration"></p>
+                        <p id="total_duration"></p>
+                        <p class="range-field">
+                            <input style="display:none" id="audioSeekBar" min="0" max="334" step="1" value="0" type="range" oninput="audioSeekBar()"
+                                onchange="this.oninput()">
+                        </p>
+
                         <a id="previous_song" style="display: none" class="btn-floating waves-effect waves-light blue"><i class="material-icons">skip_previous</i></a>
                         <a id="play" style="display: none" class="btn-floating waves-effect waves-light red"><i class="material-icons">play_arrow</i></a>
                         <a id="pause" style="display: none" class="btn-floating waves-effect waves-light red"><i class="material-icons">pause</i></a>
                         <a id="next_song" style="display: none" class="btn-floating waves-effect waves-light blue"><i class="material-icons">skip_next</i></a>
 
-                        <div class="card-content">
-                            <p class="range-field">
-                                <input style="display: none" id="audioSeekBar" min="0" max="334" step="1" value="0" type="range" oninput="audioSeekBar()"
-                                    onchange="this.oninput()">
-                            </p>
-                            <p id="duration"></p>
-                            <p id="total_duration"></p>
-                        </div>
-                        <div class="card-content">
-                            <p class="range-field">
-                                <label style="display: none" id="label_volume" for="volume"><i class="material-icons">volume_up</i></label>
-                                <input style="display: none" id="volume" style="width:50%" type="range" min="0" max="100" value="100" step="1" oninput="player.volume = this.value/100"
-                                    onchange="this.oninput()">
-                            </p>
-                        </div>
-                    </center>
+                        <br/><br/>
+                        <i id="label_volume" class="material-icons">volume_up</i>
+                        <p class="range-field">
+                            <input style="display:none" id="volume" type="range" min="0" max="100" value="100" step="1" oninput="player.volume = this.value/100"
+                                onchange="this.oninput()">
+                        </p>
+
+                    
                     <div class="card-action">
                         <div class="btn-flat tooltipped file-field input-field" data-position="top" data-delay="50" data-tooltip="Shuffle the playlist">
                             <div id="shuffle"><i class="material-icons">shuffle</i></div>
                         </div>
-                        <div class="btn-flat tooltipped file-field input-field" data-position="top" data-delay="50" data-tooltip="Get music from a folder...">
-                            <span><i class="material-icons">queue_music</i></span>
-                            <input id="files" name="files[]" accept="audio/mp3" type="file" multiple webkitdirectory>
-                        </div>
-                        <div class="btn-flat tooltipped file-field input-field" data-position="top" data-delay="50" data-tooltip="Get music from a file...">
-                            <span><i class="material-icons">music_note</i></span>
-                            <input id="files2" name="files[]" accept="audio/mp3" type="file">
-                        </div>
                         <div class="btn-flat tooltipped file-field input-field" data-position="top" data-delay="50" data-tooltip="Clear playlist">
                             <div id="playlist_clean"><i class="material-icons">clear_all</i></div>
                         </div>
-                        <div class="btn-flat tooltipped file-field input-field" data-position="top" data-delay="50" data-tooltip="Download playlist">
-                            <div id="playlist_download"><i class="material-icons">file_download</i></div>
-                        </div>
-                        <div class="btn-flat tooltipped file-field input-field" data-position="top" data-delay="50" data-tooltip="Upload playlist">
-                            <div id="playlist_upload"><i class="material-icons">file_upload</i></div>
-                            <input id="pl_upload" name="file" accept=".npl" type="file">
-                        </div>
                     </div>
+                    </center>
                 </div>
             </div>
         </div>
         <div class="col s8">
             <div class="collection" style="width: 100%; height: 80%; overflow: auto" id="playlist"></div>
         </div>
-
+        <!--Side navigation-->
         <ul id="slide-out" class="side-nav">
             <li>
                 <div class="userView">
@@ -121,7 +108,37 @@
             <li><a class="waves-effect" href="#!">Third Link With Waves</a></li>
         </ul>
 
-
+        <!--Bottom Toolbar-->
+        <div class="fixed-action-btn toolbar">
+            <a class="btn-floating btn-large darken-1">
+                <i class="large material-icons">menu</i>
+            </a>
+            <ul>
+                <li class="waves-effect waves-light">
+                    <div class="btn-flat tooltipped file-field input-field" data-position="top" data-delay="50" data-tooltip="Get music from a folder...">
+                        <i class="material-icons">queue_music</i>
+                        <input id="files" name="files[]" accept="audio/mp3" type="file" multiple webkitdirectory>
+                    </div>
+                </li>
+                <li class="waves-effect waves-light">
+                    <div class="btn-flat tooltipped file-field input-field" data-position="top" data-delay="50" data-tooltip="Get music from a file...">
+                        <span><i class="material-icons">music_note</i></span>
+                        <input id="files2" name="files[]" accept="audio/mp3" type="file">
+                    </div>
+                </li>
+                <li class="waves-effect waves-light">
+                    <div class="btn-flat tooltipped file-field input-field" data-position="top" data-delay="50" data-tooltip="Download playlist">
+                        <div id="playlist_download"><i class="material-icons">file_download</i></div>
+                    </div>
+                </li>
+                <li class="waves-effect waves-light">
+                    <div class="btn-flat tooltipped file-field input-field" data-position="top" data-delay="50" data-tooltip="Upload playlist">
+                        <div id="playlist_upload"><i class="material-icons">file_upload</i></div>
+                        <input id="pl_upload" name="file" accept=".npl" type="file">
+                    </div>
+                </li>
+            </ul>
+        </div>
 
         <script>
             document.getElementById('files').addEventListener('change', handleFileSelect, false);

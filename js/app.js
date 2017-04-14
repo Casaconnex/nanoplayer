@@ -4,7 +4,9 @@ var listMp3FromCloud = [];
 
 
 $(document).ready(function () {
-    $('.tooltipped').tooltip({ delay: 50 });
+    $('.tooltipped').tooltip({
+        delay: 50
+    });
     $(".button-collapse").sideNav({
         menuWidth: 300, // Default is 300
         edge: 'left', // Choose the horizontal origin
@@ -23,7 +25,10 @@ function hideElementsOnPage() {
     $('#play').hide();
     $('#pause').hide();
     $('#previous_song').hide();
+    $('#current_song').hide();
     $('#next_song').hide();
+    $('#duration').hide();
+    $('#total_duration').hide();
 }
 
 function showElementsOnPage() {
@@ -41,7 +46,9 @@ function handleFileFromCloud(evt) {
     var url = $("#music_cloud_url").val();
     $.ajax({
         url: url,
-        headers: { "Access-Control-Allow-Origin": "*" },
+        headers: {
+            "Access-Control-Allow-Origin": "*"
+        },
         success: function (data) {
             var pos = 0;
             songs = [];
@@ -85,6 +92,7 @@ function initPlayer() {
 
     $('#playlist_clean').click(function () {
         $("#playlist").empty();
+        hideElementsOnPage();
         player.pause();
         player.src = '';
         $('#cover').attr("src", "img/vinil.png");
@@ -96,7 +104,9 @@ function initPlayer() {
     $('#playlist_download').click(function () {
         if (songs.length > 0) {
             var jsonToSave = JSON.stringify(songs);
-            var file = new Blob([jsonToSave], { type: 'text/plain' });
+            var file = new Blob([jsonToSave], {
+                type: 'text/plain'
+            });
             var fileUrl = URL.createObjectURL(file);
             var downloadLink = document.createElement("a");
             downloadLink.download = "playlist.npl";
@@ -151,7 +161,12 @@ function genList(music) {
     $.each(music, function (i, song) {
         if (song.image === null)
             song.image = 'img/vinil.png';
-        $("#playlist").append('<a class="collection-item"><img style="width: 50px; height: 50px" src="' + song.image + '"></img>' + song.name + '<i><img id="' + i + '" src="img/play.png" align="right"></img></i></a>');
+        var fullSongTitle;
+        if (song.album === '')
+            fullSongTitle = song.name;
+        else
+            fullSongTitle = song.name + ' - ' + song.album;
+        $("#playlist").append('<a class="collection-item"><img style="width: 50px; height: 50px" src="' + song.image + '"></img>' + fullSongTitle + '<i><img id="' + i + '" src="img/play.png" align="right"></img></i></a>');
     });
     $('#playlist img').click(function () {
         var selectedSong = $(this).attr('id');
@@ -173,15 +188,22 @@ function playSong(selectedSong) {
         showElementsOnPage();
         var songName = music[selectedSong].name;
         var songAlbum = music[selectedSong].album || '';
-        var fullSongTitle = songName + ' - ' + songAlbum;
-        var titleSong = document.createTextNode(songName);
+        var fullSongTitle;
+        if (songAlbum === '')
+            fullSongTitle = songName;
+        else
+            fullSongTitle = songName + ' - ' + songAlbum;
+        var titleSong = document.createTextNode(fullSongTitle);
         $('#cover').attr('src', music[selectedSong].image);
         $('#current_song').html(titleSong);
-        notifyUser(songName, music[selectedSong].image);
+        $('#current_song').show();
+        $('#play').hide();
+        notifyUser(fullSongTitle, music[selectedSong].image);
         scheduleSong(selectedSong);
     }
 
 }
+
 function notifyUser(songName, picture) {
     Push.create("NanoPlayer", {
         body: songName,
