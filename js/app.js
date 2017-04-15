@@ -170,9 +170,9 @@ function genList(music) {
             fullSongTitle = song.name + ' - ' + song.album;
         $("#playlist").append('<a class="collection-item"><img style="width: 50px; height: 50px" src="' + song.image + '"></img>' + fullSongTitle + '<i><img id="' + i + '" src="img/play.png" align="right"></img></i></a>');
     });
-    $('#playlist img').click(function () {
+    $('#playlist img').click(function () {        
         var selectedSong = $(this).attr('id');
-        playSong(selectedSong);
+        playSong(selectedSong);        
     });
     $('#playlist a').click(function () {
         $('#playlist a').removeClass('active');
@@ -180,12 +180,16 @@ function genList(music) {
     });
 }
 
+
+
 function playSong(selectedSong) {
     var long = music;
     if (selectedSong >= long.length) {
         player.pause();
     } else {
-        $('#player').attr('src', music[selectedSong].song);
+        if(!music[selectedSong].AreTagsLoaded)
+            getTasgCurrentSong(music[selectedSong].objFile, music[selectedSong]);
+        $('#player').attr('src', music[selectedSong].song);        
         player.play();
         showElementsOnPage();
         var songName = music[selectedSong].name;

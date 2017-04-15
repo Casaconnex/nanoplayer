@@ -21,7 +21,7 @@
     <script src="js/app_cloud.js"></script>
     <script src="js/app_local.js"></script>
     <script src="js/tags_mp3.js"></script>
-    <script src="https://use.fontawesome.com/3b0dcf9084.js"></script>
+    <!--<script src="https://use.fontawesome.com/3b0dcf9084.js"></script>-->
     <script src="modules/push.js/push.min.js"></script>
     <script src="modules/materialize/js/materialize.min.js"></script>
     <script src="modules/mediatagsreader/dist/id3-minimized.js"></script>
@@ -63,15 +63,15 @@
                                 onchange="this.oninput()">
                         </p>
 
-                    
-                    <div class="card-action">
-                        <div class="btn-flat tooltipped file-field input-field" data-position="top" data-delay="50" data-tooltip="Shuffle the playlist">
-                            <div id="shuffle"><i class="material-icons">shuffle</i></div>
+
+                        <div class="card-action">
+                            <div class="btn-flat tooltipped file-field input-field" data-position="top" data-delay="50" data-tooltip="Shuffle the playlist">
+                                <div id="shuffle"><i class="material-icons">shuffle</i></div>
+                            </div>
+                            <div class="btn-flat tooltipped file-field input-field" data-position="top" data-delay="50" data-tooltip="Clear playlist">
+                                <div id="playlist_clean"><i class="material-icons">clear_all</i></div>
+                            </div>
                         </div>
-                        <div class="btn-flat tooltipped file-field input-field" data-position="top" data-delay="50" data-tooltip="Clear playlist">
-                            <div id="playlist_clean"><i class="material-icons">clear_all</i></div>
-                        </div>
-                    </div>
                     </center>
                 </div>
             </div>
@@ -109,30 +109,30 @@
         </ul>
 
         <!--Bottom Toolbar-->
-        <div class="fixed-action-btn toolbar">
+        <div class="fixed-action-btn vertical">
             <a class="btn-floating btn-large darken-1">
                 <i class="large material-icons">menu</i>
             </a>
             <ul>
                 <li class="waves-effect waves-light">
-                    <div class="btn-flat tooltipped file-field input-field" data-position="top" data-delay="50" data-tooltip="Get music from a folder...">
+                    <div class="btn-floating tooltipped file-field input-field" data-position="top" data-delay="50" data-tooltip="Get music from a folder...">
                         <i class="material-icons">queue_music</i>
                         <input id="files" name="files[]" accept="audio/mp3" type="file" multiple webkitdirectory>
                     </div>
                 </li>
                 <li class="waves-effect waves-light">
-                    <div class="btn-flat tooltipped file-field input-field" data-position="top" data-delay="50" data-tooltip="Get music from a file...">
+                    <div class="btn-floating tooltipped file-field input-field" data-position="top" data-delay="50" data-tooltip="Get music from a file...">
                         <i class="material-icons">music_note</i>
                         <input id="files2" name="files[]" accept="audio/mp3" type="file">
                     </div>
                 </li>
                 <li class="waves-effect waves-light">
-                    <div class="btn-flat tooltipped file-field input-field" data-position="top" data-delay="50" data-tooltip="Download playlist">
+                    <div class="btn-floating tooltipped file-field input-field" data-position="top" data-delay="50" data-tooltip="Download playlist">
                         <div id="playlist_download"><i class="material-icons">file_download</i></div>
                     </div>
                 </li>
                 <li class="waves-effect waves-light">
-                    <div class="btn-flat tooltipped file-field input-field" data-position="top" data-delay="50" data-tooltip="Upload playlist">
+                    <div class="btn-floating tooltipped file-field input-field" data-position="top" data-delay="50" data-tooltip="Upload playlist">
                         <div id="playlist_upload"><i class="material-icons">file_upload</i></div>
                         <input id="pl_upload" name="file" accept=".npl" type="file">
                     </div>

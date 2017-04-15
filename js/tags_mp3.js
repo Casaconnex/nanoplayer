@@ -1,6 +1,43 @@
 /*GET TAGS FROM MP3 FILES*/
 
 //from a file using FileAPI
+function getSongTagsFromFile(file, objSong)
+{
+    var url = file.urn || file.name;
+
+    ID3.loadTags(url, function () {
+        getTags(url, objSong);
+    }, {
+            tags: ["title", "artist", "album", "picture"],
+            dataReader: ID3.FileAPIReader(file)
+        });
+}
+
+function getTags(url, objSong) {
+    var tags = ID3.getAllTags(url);
+    console.log(tags);
+    
+    if (tags) {        
+        objSong["name"] = tags.title || '';
+        objSong["artist"] = tags.artist || '';
+        objSong["album"] = tags.album || '';
+        objSong["AreTagsLoaded"] = true;
+    }
+    var image = tags.picture;
+    if (image) {
+        var base64String = "";
+        for (var i = 0; i < image.data.length; i++) {
+            base64String += String.fromCharCode(image.data[i]);
+        }
+        var base64 = "data:" + image.format + ";base64," +
+            window.btoa(base64String);
+        objSong["image"] = base64;
+    } else {
+        objSong["image"] = null;
+    }
+}
+
+
 function getSongTagsFromFiles(pos, file, path) {
     var url = file.urn || file.name;
 
