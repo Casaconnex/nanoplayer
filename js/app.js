@@ -38,6 +38,8 @@ function showElementsOnPage() {
     $('#audioSeekBar').show();
     $('#label_volume').show();
     $('#volume').show();
+    $('#duration').show();
+    $('#total_duration').show();
 }
 
 
