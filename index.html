@@ -33,51 +33,53 @@
         <a href="#" data-activates="slide-out" class="button-collapse"><i class="material-icons">menu</i></a>
     </paper-toolbar>
 
-    <div class="row">
-        <div class="col s4">
-            <div class="card">
-                <div class="card-image">
-                    <img id="cover" src="img/vinil.png">
-                    <p style="display: none" id="current_song" class="card-title teal lighten-2 truncate"></p>
-                </div>
-                <div class="card-content">
-                    <audio style="display: none" id="player" ontimeupdate="SeekBar()" ondurationchange="CreateSeekBar()">
-                    </audio>
-                    <center>
-                        <p id="duration"></p>
-                        <p id="total_duration"></p>
-                        <p class="range-field">
-                            <input style="display:none" id="audioSeekBar" min="0" max="334" step="1" value="0" type="range" oninput="audioSeekBar()"
-                                onchange="this.oninput()">
-                        </p>
+    <div class="container">
+        <div class="row">
+            <div class="col s4">
+                <div class="card">
+                    <div class="card-image">
+                        <img id="cover" src="img/vinil.png">
+                        <p style="display: none" id="current_song" class="card-title teal lighten-2 truncate"></p>
+                    </div>
+                    <div class="card-content">
+                        <audio style="display: none" id="player" ontimeupdate="SeekBar()" ondurationchange="CreateSeekBar()">
+                        </audio>
+                        <center>
+                            <p id="duration"></p>
+                            <p id="total_duration"></p>
+                            <p class="range-field">
+                                <input style="display:none" id="audioSeekBar" min="0" max="334" step="1" value="0" type="range" oninput="audioSeekBar()"
+                                    onchange="this.oninput()">
+                            </p>
 
-                        <a id="previous_song" style="display: none" class="btn-floating waves-effect waves-light blue"><i class="material-icons">skip_previous</i></a>
-                        <a id="play" style="display: none" class="btn-floating waves-effect waves-light red"><i class="material-icons">play_arrow</i></a>
-                        <a id="pause" style="display: none" class="btn-floating waves-effect waves-light red"><i class="material-icons">pause</i></a>
-                        <a id="next_song" style="display: none" class="btn-floating waves-effect waves-light blue"><i class="material-icons">skip_next</i></a>
+                            <a id="previous_song" style="display: none" class="btn-floating waves-effect waves-light blue"><i class="material-icons">skip_previous</i></a>
+                            <a id="play" style="display: none" class="btn-floating waves-effect waves-light red"><i class="material-icons">play_arrow</i></a>
+                            <a id="pause" style="display: none" class="btn-floating waves-effect waves-light red"><i class="material-icons">pause</i></a>
+                            <a id="next_song" style="display: none" class="btn-floating waves-effect waves-light blue"><i class="material-icons">skip_next</i></a>
 
-                        <br/><br/>
-                        <i id="label_volume" class="material-icons">volume_up</i>
-                        <p class="range-field">
-                            <input style="display:none" id="volume" type="range" min="0" max="100" value="100" step="1" oninput="player.volume = this.value/100"
-                                onchange="this.oninput()">
-                        </p>
+                            <br/><br/>
+                            <i id="label_volume" class="material-icons">volume_up</i>
+                            <p class="range-field">
+                                <input style="display:none" id="volume" type="range" min="0" max="100" value="100" step="1" oninput="player.volume = this.value/100"
+                                    onchange="this.oninput()">
+                            </p>
 
 
-                        <div class="card-action">
-                            <div class="btn-flat tooltipped file-field input-field" data-position="top" data-delay="50" data-tooltip="Shuffle the playlist">
-                                <div id="shuffle"><i class="material-icons">shuffle</i></div>
+                            <div class="card-action">
+                                <div class="btn-flat tooltipped file-field input-field" data-position="top" data-delay="50" data-tooltip="Shuffle the playlist">
+                                    <div id="shuffle"><i class="material-icons">shuffle</i></div>
+                                </div>
+                                <div class="btn-flat tooltipped file-field input-field" data-position="top" data-delay="50" data-tooltip="Clear playlist">
+                                    <div id="playlist_clean"><i class="material-icons">clear_all</i></div>
+                                </div>
                             </div>
-                            <div class="btn-flat tooltipped file-field input-field" data-position="top" data-delay="50" data-tooltip="Clear playlist">
-                                <div id="playlist_clean"><i class="material-icons">clear_all</i></div>
-                            </div>
-                        </div>
-                    </center>
+                        </center>
+                    </div>
                 </div>
             </div>
-        </div>
-        <div class="col s8">
-            <div class="collection" style="width: 100%; height: 80%; overflow: auto" id="playlist"></div>
+            <div class="col s8">
+                <div class="collection" style="width: 100%; height: 80%; overflow: auto" id="playlist"></div>
+            </div>
         </div>
         <!--Side navigation-->
         <ul id="slide-out" class="side-nav">
