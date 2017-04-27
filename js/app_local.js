@@ -47,7 +47,6 @@ function handleFileSelect(evt) {
     }, window.performance.timing.domContentLoadedEventEnd - window.performance.timing.navigationStart);
 }
 
-function getTasgCurrentSong(file, objSong)
-{
+function getTasgCurrentSong(file, objSong) {
     getSongTagsFromFile(file, objSong);
 }

@@ -21,7 +21,6 @@
     <script src="js/app_cloud.js"></script>
     <script src="js/app_local.js"></script>
     <script src="js/tags_mp3.js"></script>
-    <!--<script src="https://use.fontawesome.com/3b0dcf9084.js"></script>-->
     <script src="modules/push.js/push.min.js"></script>
     <script src="modules/materialize/js/materialize.min.js"></script>
     <script src="modules/mediatagsreader/dist/id3-minimized.js"></script>
@@ -33,10 +32,26 @@
         <a href="#" data-activates="slide-out" class="button-collapse"><i class="material-icons">menu</i></a>
     </paper-toolbar>
 
+    <!--parallax-->
+    <div id="parallax" >
+        <div class="parallax-container">
+            <div class="parallax"><img src="img/back-piano.jpg"></div>
+        </div>
+        <div class="section white">
+            <div class="row container">
+                <h2 class="header">NanoPlayer</h2>
+                <p class="grey-text text-darken-3 lighten-3">Your music player for desktop. Listen your music saved in your computer</p><br/>
+                <button id="btn-start" class="btn waves-effect waves-light blue">Start>></button>
+            </div>
+        </div>
+        <div class="parallax-container">
+            <div class="parallax"><img src="img/back-dj.jpg"></div>
+        </div>
+    </div>
     <div class="container">
         <div class="row">
             <div class="col s4">
-                <div class="card">
+                <div class="card" id="card_player" style="display: none;">
                     <div class="card-image">
                         <img id="cover" src="img/vinil.png">
                         <p style="display: none" id="current_song" class="card-title teal lighten-2 truncate"></p>
@@ -78,7 +93,7 @@
                 </div>
             </div>
             <div class="col s8">
-                <div class="collection" style="width: 100%; height: 80%; overflow: auto" id="playlist"></div>
+                <div class="collection" style="display: none; width: 100%; height: 700px; overflow-y: scroll;" id="playlist"></div>
             </div>
         </div>
         <!--Side navigation-->
@@ -111,7 +126,7 @@
         </ul>
 
         <!--Bottom Toolbar-->
-        <div class="fixed-action-btn vertical">
+        <div id="toolbar" class="fixed-action-btn vertical" style="display: none">
             <a class="btn-floating btn-large green darken-1">
                 <i class="large material-icons">menu</i>
             </a>
@@ -143,21 +158,24 @@
         </div>
 
         <script>
-            document.getElementById('files').addEventListener('change', handleFileSelect, false);
-            document.getElementById('files2').addEventListener('change', handleFileSelect, false);
-            document.getElementById('pl_upload').addEventListener('change', handleFileUpload, false);
-            document.getElementById('music_cloud').addEventListener('click', handleFileFromCloud, false);
-            document.getElementById('cloud_generate_playlist').addEventListener('click', handleGenPlaylist, false);
-            player.addEventListener("timeupdate", function () {
-                var duration = document.getElementById("duration");
-                var s = parseInt(player.currentTime % 60);
-                var m = parseInt((player.currentTime / 60) % 60);
-                duration.innerHTML = m + ':' + s;
-                var sec = parseInt(player.duration % 60);
-                var min = parseInt((player.duration / 60) % 60);
-                var total_duration = document.getElementById("total_duration");
-                total_duration.innerHTML = ' / ' + min + ':' + sec;
-            }, false);
+            $(document).ready(function () {
+                document.getElementById('files').addEventListener('change', handleFileSelect, false);
+                document.getElementById('files2').addEventListener('change', handleFileSelect, false);
+                document.getElementById('pl_upload').addEventListener('change', handleFileUpload, false);
+                document.getElementById('music_cloud').addEventListener('click', handleFileFromCloud, false);
+                document.getElementById('cloud_generate_playlist').addEventListener('click', handleGenPlaylist, false);
+                document.getElementById('btn-start').addEventListener('click', handleStartNP, false);
+                player.addEventListener("timeupdate", function () {
+                    var duration = document.getElementById("duration");
+                    var s = parseInt(player.currentTime % 60);
+                    var m = parseInt((player.currentTime / 60) % 60);
+                    duration.innerHTML = m + ':' + s;
+                    var sec = parseInt(player.duration % 60);
+                    var min = parseInt((player.duration / 60) % 60);
+                    var total_duration = document.getElementById("total_duration");
+                    total_duration.innerHTML = ' / ' + min + ':' + sec;
+                }, false);
+            });
         </script>
 </body>
 

@@ -4,6 +4,7 @@ var listMp3FromCloud = [];
 
 
 $(document).ready(function () {
+    $('.parallax').parallax();
     $('.tooltipped').tooltip({
         delay: 50
     });
@@ -17,6 +18,11 @@ $(document).ready(function () {
     initPlayer();
 });
 
+function handleStartNP(){
+    $('#parallax').hide();
+    $('#toolbar').show();
+}
+
 function hideElementsOnPage() {
     $('#audioSeekBar').hide();
     $('#label_volume').hide();
@@ -29,6 +35,8 @@ function hideElementsOnPage() {
     $('#next_song').hide();
     $('#duration').hide();
     $('#total_duration').hide();
+    $('#card_player').hide();
+    $('#playlist').hide();
 }
 
 function showElementsOnPage() {
@@ -40,6 +48,8 @@ function showElementsOnPage() {
     $('#volume').show();
     $('#duration').show();
     $('#total_duration').show();
+    $('#card_player').show();
+    $('#playlist').show();
 }
 
 
@@ -168,11 +178,11 @@ function genList(music) {
             fullSongTitle = song.name;
         else
             fullSongTitle = song.name + ' - ' + song.album;
-        $("#playlist").append('<a class="collection-item"><img style="width: 50px; height: 50px" src="' + song.image + '"></img>' + fullSongTitle + '<i><img id="' + i + '" src="img/play.png" align="right"></img></i></a>');
+        $("#playlist").append('<a class="collection-item"><img id="cover" style="width: 50px; height: 50px" src="' + song.image + '"></img>' + fullSongTitle + '<i><img id="' + i + '" src="img/play.png" align="right"></img></i></a>');
     });
-    $('#playlist img').click(function () {        
+    $('#playlist img').click(function () {
         var selectedSong = $(this).attr('id');
-        playSong(selectedSong);        
+        playSong(selectedSong);
     });
     $('#playlist a').click(function () {
         $('#playlist a').removeClass('active');
@@ -187,9 +197,7 @@ function playSong(selectedSong) {
     if (selectedSong >= long.length) {
         player.pause();
     } else {
-        if(!music[selectedSong].AreTagsLoaded)
-            getTasgCurrentSong(music[selectedSong].objFile, music[selectedSong]);
-        $('#player').attr('src', music[selectedSong].song);        
+        $('#player').attr('src', music[selectedSong].song);
         player.play();
         showElementsOnPage();
         var songName = music[selectedSong].name;
@@ -206,6 +214,7 @@ function playSong(selectedSong) {
         $('#play').hide();
         notifyUser(fullSongTitle, music[selectedSong].image);
         scheduleSong(selectedSong);
+        LoadingTags();
     }
 
 }
@@ -234,4 +243,16 @@ function shuffle(array) {
     if (array.length > 0)
         for (var random, temp, position = array.length; position; random = Math.floor(Math.random() * position), temp = array[--position], array[position] = array[random], array[random] = temp);
     return array;
+}
+
+function LoadingTags() {
+    music.forEach(function (element, index) {        
+        if (!element.AreTagsLoaded) {
+            getTasgCurrentSong(element.objFile, element);
+            if (element.image != null) {
+                $('#playlist img#cover')[index].src = element.image;
+                $('#playlist img#cover')[index].style = "width: 50px; height: 50px";
+            }
+        }
+    }, this);
 }
