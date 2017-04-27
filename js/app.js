@@ -21,6 +21,7 @@ $(document).ready(function () {
 function handleStartNP(){
     $('#parallax').hide();
     $('#toolbar').show();
+    $('#paper-toolbar').show();
 }
 
 function hideElementsOnPage() {
